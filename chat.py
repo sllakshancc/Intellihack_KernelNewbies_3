@@ -21,7 +21,7 @@ embeddings = OpenAIEmbeddings(
 
 
 
-chat_template = """You are a helpful AI assistant that can answer user questions based on the chat history and the given context.
+chat_template = """You are a helpful AI assistant for the bank named "Smart Bank" that can answer user questions based on the chat history and the given context.
 
 <CONTEXT>:
 {context}

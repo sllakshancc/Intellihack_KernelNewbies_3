@@ -20,22 +20,6 @@ embeddings = OpenAIEmbeddings(
 )
 
 
-def load_docs():
-    loader = PyPDFLoader("data/row_01.pdf")
-    pages = loader.load_and_split()
-    pages = pages[1:] # exlude first page
-    print(f"loaded {len(pages)} pages.")
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=400, chunk_overlap=30)
-    docs = text_splitter.split_documents(pages)
-    print(f"loaded {len(docs)} docs.")
-    db = FAISS.from_documents(docs, embeddings)
-    if os.path.exists("local_vector_store/faiss_index"):
-        shutil.rmtree("local_vector_store/faiss_index")
-        print("Deleted existing vector store")
-    db.save_local("local_vector_store/faiss_index")
-    print("Saved vector store")
-
-
 
 chat_template = """You are a helpful AI assistant that can answer user questions based on the chat history and the given context.
 
@@ -67,7 +51,7 @@ memory = ConversationBufferMemory(memory_key="chat_history", ai_prefix="AI Assis
 chat_chain = LLMChain(
     llm=llm,
     prompt=chat_prompt,
-    verbose=True
+    verbose=False
 )
 
 
@@ -83,8 +67,9 @@ def chat(message):
 
 
 def main():
+    print("\n\n\n\n")
     while True:
-        user_input = input("Question: ").strip()
+        user_input = input("\n\nQuestion: ").strip()
 
         if not user_input:
             print("Error: Input is empty")
@@ -96,7 +81,7 @@ def main():
 
         response = chat(user_input)
 
-        print("Response: ", response)
+        print("\nResponse: ", response)
 
         
 
